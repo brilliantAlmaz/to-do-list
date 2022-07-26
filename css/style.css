@@ -77,12 +77,9 @@ html {
 }
 
 .container {
-  max-width: 1230px;
+  max-width: 1200px;
+  padding: 0 15px;
   margin: 0 auto;
-}
-
-.toDoList__title {
-  color: #fff;
 }
 
 .title {
@@ -120,14 +117,32 @@ html {
 
 .toDoList__header {
   width: 100%;
-  background: rgba(0, 0, 0, 0.8);
+  background: white;
+  height: auto;
   position: absolute;
   z-index: 5;
   top: 0;
+  line-height: 75px;
+}
+.toDoList__header .container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .toDoList__subtitle {
-  color: #fff;
+  color: #4f4f4f;
+  line-height: 40px;
+}
+
+.toDoList__title {
+  color: #0f0f0f;
 }
 
 .bg-block__btn {
@@ -238,6 +253,12 @@ form {
 }
 
 .toDoList__list-item {
+  border-radius: 5px;
+  min-height: 70px;
+  padding: 20px;
+  margin: 20px 9px 9px 9px;
+  -webkit-box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.2);
+          box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.2);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -261,9 +282,18 @@ form {
           transform: translate(-90%, 0);
   opacity: 0;
 }
+.toDoList__list-item:first-child {
+  margin: 0 9px 9px 9px;
+}
+
+.toDoList__clear-btn {
+  margin: 0 0 15px 0;
+}
 
 .list-item__name {
-  max-width: 75%;
+  word-wrap: break-word;
+  width: 75%;
+  height: auto;
   font-weight: 400;
   font-size: 36px;
   color: #000;
@@ -280,6 +310,7 @@ form {
 
 .list-item__check {
   width: 34px;
+  height: 34px;
 }
 
 .list-item__delete-btn {
@@ -304,12 +335,11 @@ form {
 
 .toDoList__btn {
   width: 125px;
+  height: 100%;
 }
 
 .toDoList__row {
   margin: 20px 0 0 0;
-}
-.toDoList__row .container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -317,7 +347,7 @@ form {
   height: 60px;
   border-radius: 10px;
 }
-.toDoList__row .container .toDoList__row-item:first-child {
+.toDoList__row .toDoList__row-item:first-child {
   border-left: 0px solid #000;
 }
 

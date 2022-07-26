@@ -8,12 +8,11 @@ html{
 .wrapper {}
 .toDoList {}
 .container {
-	max-width:1230px;
+	max-width:1200px;
+	padding:0 15px;
 	margin:0 auto;
 }
-.toDoList__title {
-	color:#fff;
-}
+
 .title {
 	font-size: 40px;
 	font-weight: 700;
@@ -45,13 +44,25 @@ html{
 }
 .toDoList__header{
 	width:100%;
-	background: rgba(#000,0.8);
+	background: rgba(#fff,1);
+	height:auto;
 	position: absolute;
 	z-index:5;
 	top:0;
+	line-height: 75px;
+
+	.container{
+		display: flex;
+		justify-content:space-between;
+		align-items:center;
+	}
 }
 .toDoList__subtitle {
-	color:#fff;
+	color:#4f4f4f;
+	line-height: 40px;
+}
+.toDoList__title {
+	color:#0f0f0f;
 }
 .bg-block__btn {
 	width:300px;
@@ -111,21 +122,21 @@ form{
 }
 .subtitle {}
 .toDoList__current{
-	//background: #000;
+
 	width:100vw;
 	padding: 20px 0 0 0;
 	min-height:100vh;
 	flex:100% 0 0;
 }
 .toDoList__done{
-	//background: #000;
+
 	width:100vw;
 	padding: 20px 0 0 0;
 	min-height:100vh;
 	flex:100% 0 0;
 }
 .toDoList__deleted{
-	//background: #000;
+
 	width:100vw;
 	padding: 20px 0 0 0;
 	min-height:100vh;
@@ -147,10 +158,16 @@ form{
 	margin: 40px 0 0 0;
 }
 .toDoList__list-item {
+	border-radius: 5px;
+	min-height:70px;
+	padding:20px;
+	margin:20px 9px 9px 9px;
+	box-shadow: 0px 0px 7px 0px rgba(#000, 0.2);
 	display: flex;
 	justify-content:space-between;
 	align-items:center;
 	opacity:1;
+	//margin: 15px 0 0 0;
 	&.deleted{
 		transform:translate(90%,0);
 		opacity:0;
@@ -159,10 +176,19 @@ form{
 		transform:translate(-90%,0);
 		opacity:0;
 	}
+	&:first-child{
+		margin:0 9px 9px 9px;
+	}
 	transition:all 0.3s ease 0s;
 }
+.toDoList__clear-btn{
+	margin: 0 0 15px 0 ;
+}
+
 .list-item__name {
-	max-width:75%;
+	word-wrap:break-word;
+	width:75%;
+	height:auto;
 	font-weight: 400;
 	font-size: 36px;
 	color:#000;
@@ -174,13 +200,13 @@ form{
 }
 .list-item__check {
 	width:34px;
+	height:34px;
 }
 .list-item__delete-btn{
 	width:34px;
 	height:34px;
 	border-radius: 6px;
 	background: #EB1D1D;
-
 }
 .toDoList__inputblock{
 	display: flex;
@@ -190,17 +216,16 @@ form{
 }
 .toDoList__btn {
 	width:125px;
+	height:100%;
 }
 .toDoList__row {
 	margin:20px 0 0 0;
-	.container{
-		display: flex;
-		border:2.5px solid #000;
-		height:60px;
-		border-radius: 10px;
-		.toDoList__row-item:first-child{
-			border-left:0px solid #000;
-		}
+	display: flex;
+	border:2.5px solid #000;
+	height:60px;
+	border-radius: 10px;
+	.toDoList__row-item:first-child{
+		border-left:0px solid #000;
 	}
 }
 .toDoList__row-item {
