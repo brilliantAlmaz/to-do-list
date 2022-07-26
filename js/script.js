@@ -13,9 +13,18 @@ window.addEventListener("resize", function(){
 		
 	}
 	sliderLine.style.width = transformValue+'px';
+	if (document.querySelector('html').offsetWidth <=800){
+		bgImage.src='img/bg-mobile.jpg';
+		bgImageOverlay.style.display='block';
+		console.log()
+	}
+	else{
+		bgImage.src='img/bg.jpg';
+	}
 });
 
-
+const bgImage=document.querySelector('.toDolist__bg-block img');
+const bgImageOverlay = document.querySelector('.bg-block__black-overlay')
 let input = document.querySelector('.toDoList__input-the-task'); //input box
 const inputBtn =document.querySelector('.toDoList__btn') //input add button
 const scrollDownBtn = document.querySelector('.bg-block__btn '); //background button that scrolls down to thework station
@@ -179,4 +188,13 @@ form.addEventListener('submit', function(e){
 
 function checkInput(){
 	return input.value=="";
+}
+
+if (document.querySelector('html').offsetWidth <=800){
+	bgImage.src='img/bg-mobile.jpg';
+	bgImageOverlay.style.display='block';
+	console.log()
+}
+else{
+	bgImage.src='img/bg.jpg';
 }
