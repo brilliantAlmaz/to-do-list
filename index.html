@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Get Things Done</title>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<div class="wrapper">
+		<div class="toDolist__bg-block">
+			<img src="img/bg.jpg" alt="">
+			<div class="bg-block__black-overlay"></div>
+			<div class="bg-block__text-block">
+				<div class="bg-block__title title">Our problem is not that we aim too high and miss, but that we aim too low and hit.</div>
+				<div class="bg-block__subtitle subtitle">Aristotle</div>
+			</div>
+			<div class="bg-block__btn btn">get to work</div>
+		</div>
+		<div class="toDoList">
+			<div class="toDoList__header">
+				<div class="container">
+					<div class="toDoList__title title">Get Things Done</div>
+				</div>
+			</div>
+			<div class="container">
+				<div class="toDoList__row">
+					<div class="toDoList__row-item">Done</div>
+					<div class="toDoList__row-item active">Current</div>
+					<div class="toDoList__row-item">Deleted</div>
+				</div>
+			</div>
+
+			<div class="toDoList__slider">
+				<div class="toDoList__slider-line" style='transform:translate(-100%,0)'>
+					<div class="toDoList__done">
+						<div class="container">
+							<div class="toDoList__clear-btn btn">clear</div>
+							<ul class="toDoList__done-list" id='done'>
+
+							</ul>
+						</div>
+					</div>
+					<!--done-->
+					<div class="toDoList__current">
+						<div class="container">
+							<form action="#" method='get'>
+								<div class="toDoList__inputblock">
+									<input name='add' type='text' placeholder='Add task' class="toDoList__input-the-task">
+									<div class="toDoList__btn btn">add</div>
+								</div>
+								<ul class="toDoList__list">
+									
+								</ul>
+							</form>
+						</div>
+					</div>
+					<div class="toDoList__deleted">
+						<div class="container">
+							<div class="toDoList__clear-btn btn">clear</div>
+							<ul class="toDoList__deleted-list" id='deleted'>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	<script src='js/script.js'></script>
+</body>
+</html>
