@@ -1,245 +1,200 @@
-inputs=document.querySelectorAll('.time-input-block input');
-inputOverflow=document.querySelector('.time-input__block-overflow');
-startBtn=document.querySelector('.start-btn');
-startBtnOverflow=document.querySelector('.start-btn-overblock');
-clearBtn=document.querySelector('.clear-btn');
-clearBtnOverflow=document.querySelector('.clear-btn-overblock');
-repeatBtn=document.querySelector('.repeat-btn');
-repeatBtnOverflow=document.querySelector('.repeat-btn-overblock');
-popUp=document.querySelector('.pop-up');
-popUpCloseBtn=document.querySelectorAll('.pop-up__exit-sign');
-popUpBtn=document.querySelectorAll('.pop-up__btn');
-popUpExplain=document.querySelector('.pop-up__explain');
-html = document.querySelector('.container');
-htmlOverflow = document.querySelector('.container__overflow')
-var hours=0, minutes=0, seconds=0, time, timerCountDown, timeValue, repeatRead=true;
-let started=false;
-let audio = new Audio();
-audio.src='audio/alarm.mp3';
+window.addEventListener("resize", function(){
+	transformValue=document.querySelector('html').offsetWidth;
+	switch(currentBlock){
+		case ("deleted"):
+		sliderLine.style.transform=`translate(${-2*transformValue}px, 0)`;
+		break;
+		case ("done"):
+		sliderLine.style.transform=`translate(0, 0)`;
+		break;
+		case ("current"):
+		sliderLine.style.transform=`translate(${-transformValue}px, 0)`;
+		break;
+		
+	}
+	sliderLine.style.width = transformValue+'px';
+	if (document.querySelector('html').offsetWidth <=800){
+		bgImage.src='img/bg-mobile.jpg';
+		bgImageOverlay.style.display='block';
+		console.log()
+	}
+	else{
+		bgImage.src='img/bg.jpg';
+	}
+});
 
-//var audio = document.querySelector('#Audio');
-//circle arguments
-var radius;
-var circumference;
-var offset;
-function setProgress(percent){
-	offset = circumference - percent/100 * circumference;
-	circle.style.strokeDashoffset = offset;
-}
-const circle = document.querySelector('.circle');
-radius = circle.r.baseVal.value;
-circumference = 2 * Math.PI * radius;
-circle.style.strokeDasharray = `${circumference} ${circumference}`;
-circle.style.strokeDashoffset = circumference;
-circle.style.transition=`all 1s linear 0s`;
-//
-buttonsReset();
-startBtn.addEventListener('click', function(){
+const bgImage=document.querySelector('.toDolist__bg-block img');
+const bgImageOverlay = document.querySelector('.bg-block__black-overlay')
+let input = document.querySelector('.toDoList__input-the-task'); //input box
+const inputBtn =document.querySelector('.toDoList__btn') //input add button
+const scrollDownBtn = document.querySelector('.bg-block__btn '); //background button that scrolls down to thework station
+let list = document.querySelector('.toDoList__list'); //current list 
+let listDone=document.getElementById('done'); //list with done tasks
+let listDeleted=document.getElementById('deleted'); // list with deleted tasks
+let listItems = document.querySelectorAll('.toDoList__list li'); //items in current list
+let deleteBtn=document.querySelectorAll('.list-item__delete-btn') //button that deletes tasks from current list
+let doneBtn =document.querySelectorAll('.list-item__check'); //button that marks tasks done
+let listItemName=document.querySelectorAll('.toDoList__list .list-item__name'); //names of every tasks in current list
+let listDeletedItemName= document.querySelectorAll('#deleted .list-item__name');
+
+let tempHTML;
+function funcInputBtn(){
 	if (checkInput()){
-		repeatBtn.classList.remove('inactive');
-		repeatBtnOverflow.classList.remove('inactive');
-		if (started){
-			pause();
-			inputs.forEach(item => 	item.classList.add('paused'));
-			startBtn.classList.add('inactive');
-			startBtn.style.cursor='pointer';
-		}
-		else{
-			inputOverflow.style.zIndex='-1';
-			start();
-			inputs.forEach(item => 	item.classList.remove('paused'));
-			startBtn.classList.remove('inactive');
-		}
-		if (repeatRead){
-			timeValue=time;
-			repeatRead=false;
-		}
+		alert("You need to type something");
 	}
 	else{
-		clear();
-		popUpExplain.style.top='0';
-		html.style.filter='blur(5px)';
-		htmlOverflow.style.zIndex='1';
+		tempHTML= `<li class="toDoList__list-item">
+		<div class="list-item__name">${input.value}</div>
+		<div class="list-item__btn-block">
+		<input type='checkbox' class="list-item__check">
+		<div class="list-item__delete-btn"></div>
+		</div>
+		</li>`;
+		list.insertAdjacentHTML(
+			"beforeend",
+			tempHTML
+			);
+		updateList();
+		console.log(listItemName[listItemName.length-1])
+		for (let i =0; i<listItems.length; i++){
+			deleteBtn[i].addEventListener('click', function(){
+				tempHTML = `<li class="toDoList__list-item">
+				<div class="list-item__name">${listItemName[i].innerHTML}</div>
+				</li>`
+				listItems[i].classList.add('deleted');
+				listDeleted.insertAdjacentHTML(
+					'beforeend',
+					tempHTML,
+					);
+				setTimeout(()=> {listItems[i].remove()},300);
+			});
+			doneBtn[i].addEventListener('click', function(){
+				tempHTML = `<li class="toDoList__list-item">
+				<div class="list-item__name">${listItemName[i].innerHTML}</div>
+				</li>`
+				listItems[i].classList.add('done');
+				listDone.insertAdjacentHTML(
+					'beforeend',
+					tempHTML,
+					);
+				setTimeout(()=> {listItems[i].remove()},300);
+			});
+		}
+		input.value="";
 	}
+}
+inputBtn.addEventListener('click', function(){
+	funcInputBtn();
 });
-repeatBtn.addEventListener('click', function(){
-	clear();
-	buttonsReset();
-	repeat();
-	clearCircle();
-});
-function repeat(){
-	started=true;
-	startBtn.innerHTML='pause';
-	clearBtn.classList.remove('inactive');
-	clearBtnOverflow.classList.remove('inactive');
-	time=timeValue;
-	time++;
-	timerCountDown=setInterval(function(){ //timer countdown
-		if (time>0){ //if time is up (==0) the timer stops
-			timeCounter();
-			printTime();
-		}
-		else{
-			clear();
-			buttonsReset();
-			popUp.style.top='0';
-			html.style.filter='blur(5px)';
-			htmlOverflow.style.zIndex='1';
-			audio.play();
-		}
-	},1000);
+
+input.addEventListener('keydown', function(e){
+	if (e.keyCode==13){
+		funcInputBtn();
+	}
+})
+
+for (let i =0; i<listItems.length; i++){
+	deleteBtn[i].addEventListener('click', function(){
+		tempHTML = `<li class="toDoList__list-item">
+		<div class="list-item__name">${listItemName[i].innerHTML}</div>
+		</li>`
+		listItems[i].classList.add('deleted');
+		listDeleted.insertAdjacentHTML(
+			'beforeend',
+			tempHTML,
+			);
+		setTimeout(()=> {listItems[i].remove()},300);
+	});
+	doneBtn[i].addEventListener('click', function(){
+		tempHTML = `<li class="toDoList__list-item">
+		<div class="list-item__name">${listItemName[i].innerHTML}</div>
+		</li>`
+		listItems[i].classList.add('done');
+		listDone.insertAdjacentHTML(
+			'beforeend',
+			tempHTML,
+			);
+		setTimeout(()=> {listItems[i].remove()},300);
+	});
 }
 
-function start(){
-	started=true;
-	startBtn.innerHTML='pause';
-	clearBtn.classList.remove('inactive');
-	clearBtnOverflow.classList.remove('inactive');
-	inputsEmpty();
-	time=getTime();
-	timerCountDown=setInterval(function(){ //timer countdown
-		if (time>0){ //if time is up (==0) the timer stops
-			timeCounter();
-			printTime();
-		}
-		else{
-			clearInterval(timerCountDown);
-			clear();
-			repeatRead=true;
-			buttonsReset();
-			clearCircle();
-			popUp.style.top='0';
-			html.style.filter='blur(5px)';
-			htmlOverflow.style.zIndex='1';
-			audio.play();
-		}
-	},1000);
-}
-popUpCloseBtn.forEach(item => item.addEventListener('click', function(){
-	popUp.style.top='-500%';
-	popUpExplain.style.top='-500%';
-	audio.pause();
-	audio.currentTime=0;
-	html.style.filter='blur(0px)';
-	htmlOverflow.style.zIndex='0';
+scrollDownBtn.addEventListener('click', () => window.scrollTo({
+	top: window.innerHeight,
+	behavior: 'smooth',
 }));
-popUpBtn.forEach(item => item.addEventListener('click', function(){
-	popUp.style.top='-500%';
-	popUpExplain.style.top='-500%';
-	audio.pause();
-	audio.currentTime=0;
-	html.style.filter='blur(0px)';
-	htmlOverflow.style.zIndex='0';
-}));
-function pause(){
-	if (started){
-		startBtn.innerHTML='continue';
-		clearInterval(timerCountDown);
-		inputOverflow.style.zIndex='1';
-	}
-	started=false;
-}
 
-clearBtn.addEventListener('click', function(){
-	clearInterval(timerCountDown);
-	clear();
-	repeatRead=true;
-	buttonsReset();
-	clearCircle();
-	inputOverflow.style.zIndex='-1';
+
+
+
+function updateList(){
+	listItems = document.querySelectorAll('.toDoList__list li');
+	deleteBtn=document.querySelectorAll('.list-item__delete-btn')
+	doneBtn=document.querySelectorAll('.list-item__check')
+	listItemName=document.querySelectorAll('.toDoList__list .list-item__name');
+	listDeleted=document.getElementById('deleted'); // list with deleted tasks
+}
+const sliderLine = document.querySelector('.toDoList__slider-line');
+const sliderRow = document.querySelectorAll('.toDoList__row-item');
+let currentBlock ='current';
+let transformValue = document.querySelector('html').offsetWidth;
+sliderRow[0].addEventListener('click', function(){
+	sliderLine.style.transform=`translate(0, 0)`;
+	currentBlock ='done';
+	sliderRow.forEach(function(item){
+		item.classList.remove('active');
+	});
+	sliderRow[0].classList.add('active');
+})
+
+sliderRow[1].addEventListener('click', function(){
+	sliderLine.style.transform=`translate(${-transformValue}px, 0)`;
+	currentBlock ='current';
+	sliderRow.forEach(function(item){
+		item.classList.remove('active');
+	});
+	sliderRow[1].classList.add('active');
+})
+
+sliderRow[2].addEventListener('click', function(){
+	sliderLine.style.transform=`translate(${-2*transformValue}px, 0)`;
+	currentBlock ='deleted';
+	sliderRow.forEach(function(item){
+		item.classList.remove('active');
+	});
+	sliderRow[2].classList.add('active');
+})
+
+const clearDoneList = document.querySelector('.toDoList__done .toDoList__clear-btn')
+const clearDeletedList = document.querySelector('.toDoList__deleted .toDoList__clear-btn')
+clearDoneList.addEventListener('click', function(){
+	let listDoneItems = document.querySelectorAll('.toDoList__done li')
+	for (let i=0; i < listDoneItems.length;i++){
+		listDoneItems[i].classList.add('done')
+		setTimeout(()=>{listDoneItems[i].remove()},300);
+	}
+})
+clearDeletedList.addEventListener('click', function(){
+	let listDeletedItems = document.querySelectorAll('.toDoList__deleted li')
+	for (let i=0; i < listDeletedItems.length;i++){
+		listDeletedItems[i].classList.add('done')
+		setTimeout(()=>{listDeletedItems[i].remove();},300);
+	}
+})
+
+const form = document.querySelector('form');
+form.addEventListener('submit', function(e){
+	e.preventDefault();
 });
-function clearCircle(){
-	circle.style.transition='all 0.2s ease 0s';
-	setProgress(100);
-}
-
-function buttonsReset(){ //resets the visual design of buttons
-	startBtn.innerHTML='start';
-	startBtn.classList.remove('inactive');
-	startBtnOverflow.classList.remove('inactive');
-	clearBtn.classList.add('inactive');
-	clearBtnOverflow.classList.add('inactive');
-	inputs.forEach(item => 	item.classList.remove('paused'));
-	setProgress(100);
-}
-
-function inputsEmpty(){
-	if (inputs[0].value == ''){
-		inputs[0].value='00';
-	}
-	if (inputs[1].value == ''){
-		inputs[1].value='00';
-	}
-	if (inputs[2].value == ''){
-		inputs[2].value='00';
-	}
-}
-
-function clear(){ //clears the time and input boxes
-	hours=0;
-	minutes=0;
-	seconds=0;
-	inputs[0].value='';
-	inputs[1].value='';
-	inputs[2].value='';
-	time=0;
-	clearInterval(timerCountDown);
-	started=false;
-}
-
-function getTime(){ //gets hours minutes and seconds
-	hours=inputs[0].value;
-	minutes=inputs[1].value;
-	seconds=inputs[2].value;
-	return +hours*3600 + +minutes*60 + +seconds;
-}
-
-function calcTimeHours(t){ //calculates current time in hours
-	return Math.floor(t/3600);
-}
-function calcTimeMinutes(t){ //calculates current time in minutes
-	return Math.floor(t/60)%60;
-}
-function calcTimeSeconds(t){ //calculates current time in seconds
-	return Math.floor(t%60);
-}
-
-function timeCounter(){ //counts down the time
-	time--;
-	circle.style.transition='all 1s linear 0s';
-	setProgress(time/timeValue * 100);
-}
-
-function printTime(){ //prints the curreent time into the input boxes
-	if (calcTimeHours(time)<10) {
-		inputs[0].value='0'+calcTimeHours(time);
-	}
-	else{
-		inputs[0].value=calcTimeHours(time);
-	}
-	if (calcTimeMinutes(time)<10) {
-		inputs[1].value='0'+calcTimeMinutes(time);
-	}
-	else{
-		inputs[1].value=calcTimeMinutes(time);
-	}
-	if (calcTimeSeconds(time)<10) {
-		inputs[2].value='0'+calcTimeSeconds(time);
-	}
-	else{
-		inputs[2].value=calcTimeSeconds(time);
-	}
-}
 
 function checkInput(){
-	let isNumber;
-	for (let i = 0; i<inputs.length; i++){
-		if (((!(isNaN(+inputs[i].value))) || (inputs[i].value='')) && (!(inputs[i].value.includes(".", 0)))){
-		}
-		else{
-			return false;
-		}
-	};
-	return true;
+	return input.value=="";
+}
+
+if (document.querySelector('html').offsetWidth <=800){
+	bgImage.src='img/bg-mobile.jpg';
+	bgImageOverlay.style.display='block';
+	console.log()
+}
+else{
+	bgImage.src='img/bg.jpg';
 }

@@ -3,71 +3,71 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Get Things Done</title>
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="icon" href="icon.svg">
-	<title>Timer</title>
 </head>
 <body>
 	<div class="wrapper">
-		<div class="pop-up">
-			<div class="pop-up__exit-sign"></div>
-			<div class="pop-up__title title">Time is up!</div>
-			<div class="pop-up__subtitle subtitle">Well done! Take a break before you get too tired.</div>
-			<div class="pup-up__image">
-				<img src="img/finish.gif" alt="">
+		<div class="toDolist__bg-block">
+			<img src="img/bg.jpg" alt="">
+			<div class="bg-block__black-overlay" style="display: none;"></div>
+			<div class="bg-block__text-block">
+				<div class="bg-block__title title">Our problem is not that we aim too high and miss, but that we aim too low and hit.</div>
+				<div class="bg-block__subtitle subtitle">Aristotle</div>
 			</div>
-			<div class="pop-up__btn btn">i got it!</div>
+			<div class="bg-block__btn btn">get to work</div>
 		</div>
-		<div class="pop-up__explain">
-			<div class="pop-up__exit-sign"></div>
-			<div class="pop-up__title title">Let me explain</div>
-			<div class="pop-up__subtitle subtitle">You need to type <span>number</span> in order to start the timer. You can't type text or symbols other than numbers inside them. <br>
-				If you leave an input box empty, it will be zero.
-				<br><br>
-				<span>Good luck!</span>
-			</div>
-			<div class="pup-up__image">
-				<img src="img/explain.gif" alt="">
-			</div>
-			<div class="pop-up__btn btn">i got it!</div>
-		</div>
-		<div class="container__overflow"></div>
-		<div class="container">
-			<div class="titleblock">
-				<div class="title">Timer</div>
-				<div class="subtitle">for you to focus on achieving your <span>dreams!</span></div>
-			</div>
-			<form action="#" method='get'>
-				<div class="time-input-block">
-					<input type="tel" class="hour-input input">
-					<span class="des-double-dots">:</span>
-					<input type="tel" class="minute-input input">
-					<span class="des-double-dots">:</span>
-					<input type="tel" class="second-input input">
-					<div class="time-input__block-overflow"></div>
+		<div class="toDoList">
+			<div class="toDoList__header">
+				<div class="container">
+					<div class="toDoList__title title">Get Things Done</div>
 				</div>
-				<svg class='circleblock' width='148px' height='148px'>
-					<circle class='circle-bg' stroke = '#00000030' stroke-width='10' cx='74' cy='74' r='62' fill='transparent'/>
-					<circle class='circle' stroke = '#000' stroke-width='10' cx='74' cy='74' r='62' fill='transparent'/>
-				</svg>
-				<div class="buttonsblock">
-					<div class="buttonsblock__item buttonblock-start">
-						<div class="start-btn-overblock overblock"></div>
-						<div class="start-btn btn">start</div>
+			</div>
+			<div class="container">
+				<div class="toDoList__row">
+					<div class="toDoList__row-item">Done</div>
+					<div class="toDoList__row-item active">Current</div>
+					<div class="toDoList__row-item">Deleted</div>
+				</div>
+			</div>
+
+			<div class="toDoList__slider">
+				<div class="toDoList__slider-line" style='transform:translate(-100%,0)'>
+					<div class="toDoList__done">
+						<div class="container">
+							<div class="toDoList__clear-btn btn">clear</div>
+							<ul class="toDoList__done-list" id='done'>
+
+							</ul>
+						</div>
 					</div>
-					<div class="buttonsblock__item buttonblock-repeat">
-						<div class="repeat-btn-overblock overblock inactive"></div>
-						<div class="repeat-btn btn inactive">repeat</div>
+					<!--done-->
+					<div class="toDoList__current">
+						<div class="container">
+							<form action="#" method='get'>
+								<div class="toDoList__inputblock">
+									<input name='add' type='text' placeholder='Add task' class="toDoList__input-the-task">
+									<div class="toDoList__btn btn">add</div>
+								</div>
+								<ul class="toDoList__list">
+									
+								</ul>
+							</form>
+						</div>
 					</div>
-					<div class="buttonsblock__item buttonblock-clear">
-						<div class="clear-btn-overblock overblock"></div>
-						<div class="clear-btn btn">clear</div>
+					<div class="toDoList__deleted">
+						<div class="container">
+							<div class="toDoList__clear-btn btn">clear</div>
+							<ul class="toDoList__deleted-list" id='deleted'>
+							</ul>
+						</div>
 					</div>
 				</div>
-			</form>
+			</div>
+			
 		</div>
 	</div>
-	<script src='js/script.js'>
-	</script>
+	<script src='js/script.js'></script>
 </body>
 </html>
