@@ -31,11 +31,12 @@ const scrollDownBtn = document.querySelector('.bg-block__btn '); //background bu
 let list = document.querySelector('.toDoList__list'); //current list 
 let listDone=document.getElementById('done'); //list with done tasks
 let listDeleted=document.getElementById('deleted'); // list with deleted tasks
-let listItems = document.querySelectorAll('.toDoList__list li'); //items in current list
+let listItems = list.children;
+listItems = Array.from(listItems);
+listItems.forEach((n, i) => n.id = i + 1)
 let deleteBtn=document.querySelectorAll('.list-item__delete-btn') //button that deletes tasks from current list
 let doneBtn =document.querySelectorAll('.list-item__check'); //button that marks tasks done
 let listItemName=document.querySelectorAll('.toDoList__list .list-item__name'); //names of every tasks in current list
-let listDeletedItemName= document.querySelectorAll('#deleted .list-item__name');
 
 let tempHTML;
 function funcInputBtn(){
@@ -43,8 +44,9 @@ function funcInputBtn(){
 		alert("You need to type something");
 	}
 	else{
+		let inputValue = properString(input.value);
 		tempHTML= `<li class="toDoList__list-item">
-		<div class="list-item__name">${input.value}</div>
+		<div class="list-item__name">${inputValue}</div>
 		<div class="list-item__btn-block">
 		<input type='checkbox' class="list-item__check">
 		<div class="list-item__delete-btn"></div>
@@ -54,34 +56,62 @@ function funcInputBtn(){
 			"beforeend",
 			tempHTML
 			);
-		updateList();
-		console.log(listItemName[listItemName.length-1])
-		for (let i =0; i<listItems.length; i++){
-			deleteBtn[i].addEventListener('click', function(){
+		updateList();	
+		console.log(listItems)
+		//console.log(listItemName[listItemName.length-1])
+		list.onclick = (e) =>{
+			const target = e.target;
+			//console.log(target)
+			if (target.classList.contains('list-item__delete-btn')){
+				targetListItem = target.parentNode.parentNode;
 				tempHTML = `<li class="toDoList__list-item">
-				<div class="list-item__name">${listItemName[i].innerHTML}</div>
+				<div class="list-item__name">${targetListItem.firstElementChild.innerHTML}</div>
 				</li>`
-				listItems[i].classList.add('deleted');
+				targetListItem.classList.add('deleted');
 				listDeleted.insertAdjacentHTML(
 					'beforeend',
-					tempHTML,
-					);
-				setTimeout(()=> {listItems[i].remove()},300);
-			});
-			doneBtn[i].addEventListener('click', function(){
+					tempHTML
+					)
+				setTimeout(()=>{
+					targetListItem.remove();
+					updateList();	
+					console.log(listItems);
+				},300)
+			}
+			else if (target.classList.contains('list-item__check')){
+				targetListItem = target.parentNode.parentNode;
 				tempHTML = `<li class="toDoList__list-item">
-				<div class="list-item__name">${listItemName[i].innerHTML}</div>
+				<div class="list-item__name">${targetListItem.firstElementChild.innerHTML}</div>
 				</li>`
-				listItems[i].classList.add('done');
+				targetListItem.classList.add('done');
 				listDone.insertAdjacentHTML(
 					'beforeend',
-					tempHTML,
-					);
-				setTimeout(()=> {listItems[i].remove()},300);
-			});
+					tempHTML
+					)
+				setTimeout(()=>{
+					targetListItem.remove();
+					updateList();	
+					console.log(listItems);
+				},300)
+			}
 		}
 		input.value="";
 	}
+}
+function properString(s){
+	let result='';
+	for (i in s){
+		if (s[i]=='<'){
+			result+='&lt;';
+		}
+		else if (s[i]=='>'){
+			result+='&gt;';
+		}
+		else{
+			result+=s[i];
+		}
+	}
+	return(result)
 }
 inputBtn.addEventListener('click', function(){
 	funcInputBtn();
@@ -93,30 +123,6 @@ input.addEventListener('keydown', function(e){
 	}
 })
 
-for (let i =0; i<listItems.length; i++){
-	deleteBtn[i].addEventListener('click', function(){
-		tempHTML = `<li class="toDoList__list-item">
-		<div class="list-item__name">${listItemName[i].innerHTML}</div>
-		</li>`
-		listItems[i].classList.add('deleted');
-		listDeleted.insertAdjacentHTML(
-			'beforeend',
-			tempHTML,
-			);
-		setTimeout(()=> {listItems[i].remove()},300);
-	});
-	doneBtn[i].addEventListener('click', function(){
-		tempHTML = `<li class="toDoList__list-item">
-		<div class="list-item__name">${listItemName[i].innerHTML}</div>
-		</li>`
-		listItems[i].classList.add('done');
-		listDone.insertAdjacentHTML(
-			'beforeend',
-			tempHTML,
-			);
-		setTimeout(()=> {listItems[i].remove()},300);
-	});
-}
 
 scrollDownBtn.addEventListener('click', () => window.scrollTo({
 	top: window.innerHeight,
@@ -127,8 +133,9 @@ scrollDownBtn.addEventListener('click', () => window.scrollTo({
 
 
 function updateList(){
-	listItems = document.querySelectorAll('.toDoList__list li');
-	deleteBtn=document.querySelectorAll('.list-item__delete-btn')
+	list = document.querySelector('.toDoList__list'); //current list 
+	listItems = list.querySelectorAll('li');
+	deleteBtn=document.querySelectorAll('.list-item__delete-btn');
 	doneBtn=document.querySelectorAll('.list-item__check')
 	listItemName=document.querySelectorAll('.toDoList__list .list-item__name');
 	listDeleted=document.getElementById('deleted'); // list with deleted tasks
